@@ -1,6 +1,6 @@
 chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
     console.log(request);
-
+    console.log(request.content);
     var method = request.method;
     if (method == 'saveChange') {
         chrome.tabs.get(request.tab, function(tab){

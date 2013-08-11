@@ -28,18 +28,37 @@ app.get('/unload.css', function (req, res) {
 });
 
 app.post('/unload.css', function (req, res) {
-	/*console.log(req.body.content);
-	fs.appendFile(unloadFile, req.body.content, function (err) {
 
-	});
-	res.send('booyah!');
-	*/
 	fs.readFile(unloadFile, 'utf8', function (err,data) {
-		var json = parser.parse(data);
-		console.log(JSON.stringify(json));
-		fs.appendFile(unloadFile, req.body.content+'\n', function (err) {
 
+		var json = parser.parse(data+'\n'+req.body.content);
+		var rulelist = json.rulelist;
+		var selectors = {};
+
+		for (var i in rulelist) {
+
+			var rule = rulelist[i];
+			if (rule.type == 'style'){
+				selectors[rule.selector] = rule.declarations;
+			}	
+		}
+
+		var fileBody = '';
+
+		for (var style in selectors) {
+			fileBody += style+' {';
+
+			var obj = selectors[style];
+			for (var key in obj) {
+				fileBody += '\n  '+key+': '+obj[key]+';';
+			}
+
+			fileBody += '\n}\n'
+		}
+
+		fs.writeFile(unloadFile, fileBody, function (err) {
+			res.send('style change saved');
 		});
-		res.send('booyah!');
+		
 	});
 });
