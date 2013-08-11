@@ -14,24 +14,26 @@ app.use(express.bodyParser());
 
 // port that server will listen on
 var port = 3000;
+var saveFile = './unload.css';
+var listenFile = 'unload.css';
 
 // start listening...
 app.listen(port);
-console.log('Express server listening on port '+port);
 
-var unloadFile = './unload.css';
+console.log('dirtypush running at http://localhost:'+port+'/'+listenFile);
 
-app.get('/unload.css', function (req, res) {
-	fs.readFile(unloadFile, 'utf8', function (err,data) {
+app.get('/'+listenFile, function (req, res) {
+	fs.readFile(saveFile, 'utf8', function (err,data) {
 		res.send(data);
+		return;
 	});
 });
 
-app.post('/unload.css', function (req, res) {
+app.post('/'+listenFile, function (req, res) {
 
-	fs.readFile(unloadFile, 'utf8', function (err,data) {
-
-		var json = parser.parse(data+'\n'+req.body.content);
+	fs.readFile(saveFile, 'utf8', function (err,data) {
+		var change = '\n'+req.body.content;
+		var json = parser.parse(data+change);
 		var rulelist = json.rulelist;
 		var selectors = {};
 
@@ -56,8 +58,16 @@ app.post('/unload.css', function (req, res) {
 			fileBody += '\n}\n'
 		}
 
-		fs.writeFile(unloadFile, fileBody, function (err) {
-			res.send('style change saved');
+		fs.writeFile(saveFile, fileBody, function (err) {
+
+			var message = 'the following edit has been saved to ';
+			message += saveFile+'\n';
+			message += '-------------------------------------------------';		
+			message += change;
+
+			console.log(message);
+			res.send(message);
+			return;
 		});
 		
 	});
