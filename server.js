@@ -15,21 +15,20 @@ app.use(express.bodyParser());
 // port that server will listen on
 var port = 3000;
 var saveFile = './unload.css';
-var listenFile = 'unload.css';
 
 // start listening...
 app.listen(port);
 
-console.log('dirtypush running at http://localhost:'+port+'/'+listenFile);
+console.log('dirtypush running at http://localhost:'+port+'/unload.css');
 
-app.get('/'+listenFile, function (req, res) {
+app.get('/unload.css', function (req, res) {
 	fs.readFile(saveFile, 'utf8', function (err,data) {
 		res.send(data);
 		return;
 	});
 });
 
-app.post('/'+listenFile, function (req, res) {
+app.post('/unload.css', function (req, res) {
 
 	fs.readFile(saveFile, 'utf8', function (err,data) {
 		var change = '\n'+req.body.content;
