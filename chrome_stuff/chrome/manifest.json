@@ -1,7 +1,7 @@
 {
-    "name": "LiveUnload",
-    "version": "0.0.4",
-    "description": "Saves changes in CSS and JS that was made via Chrome DevTools",
+    "name": "dirtypush",
+    "version": "0.0.1",
+    "description": "autosave css edits in chrome devtools",
     "devtools_page": "devtools.html",
     "background": {
         "page":"background.html"
@@ -12,7 +12,6 @@
         "128": "icon_128.png"
     },
     "permissions": [
-        "notifications",
         "tabs",
         "http://*/"
     ],
