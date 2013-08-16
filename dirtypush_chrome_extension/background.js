@@ -8,7 +8,7 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
             $.ajax({   
                 type: 'POST',
                 cache: false,  
-                url: tab.url+'unload.css', 
+                url: tab.url+'dirtypush.css', 
                 data: {content: request.content},  
                 success: function(data){
                                           

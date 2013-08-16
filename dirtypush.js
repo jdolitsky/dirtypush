@@ -14,23 +14,31 @@ app.use(express.bodyParser());
 
 // port that server will listen on
 var port = 3000;
-var saveFile = './unload.css';
+var saveFile = './dirtypush.css';
 
 // start listening...
 app.listen(port);
 
-console.log('dirtypush running at http://localhost:'+port+'/unload.css');
+console.log('dirtypush running at http://localhost:'+port+'/dirtypush.css');
 
-app.get('/unload.css', function (req, res) {
+app.get('/dirtypush.css', function (req, res) {
 	fs.readFile(saveFile, 'utf8', function (err,data) {
+		if (err) {
+			data = '* {}';
+		}
 		res.send(data);
 		return;
 	});
 });
 
-app.post('/unload.css', function (req, res) {
+app.post('/dirtypush.css', function (req, res) {
 
 	fs.readFile(saveFile, 'utf8', function (err,data) {
+
+		if (err) {
+			data = "* {}";
+		}
+
 		var change = '\n'+req.body.content;
 		var json = parser.parse(data+change);
 		var rulelist = json.rulelist;
